@@ -10,7 +10,7 @@ map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-v9', // Satellite-only style (no labels)
     center: [0, 0],
-    zoom: 2,
+    zoom: 15,
     maxZoom: 22 // Maximum zoom level
 });
 
@@ -90,3 +90,4 @@ function checkAnswer(selectedAnswer) {
 
 // Start the game
 loadData();
+
