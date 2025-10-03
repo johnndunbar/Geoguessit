@@ -10,8 +10,7 @@ map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-v9',
     center: [0, 0], // Default center
-    zoom: 20,
-	maxZoom: 24
+    zoom: 20
 });
 
 // Load data from Google Sheets
