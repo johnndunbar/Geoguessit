@@ -41,10 +41,11 @@ function loadRandomLocation() {
     currentData = allSheetData[randomIndex];
     correctAnswer = currentData.correctAnswer;
 
-    // Center map on the location with maximum zoom
+    // Center map on the location with the zoom level from the CSV
     const coordinates = [parseFloat(currentData.longitude), parseFloat(currentData.latitude)];
+    const zoomLevel = parseInt(currentData.zoom) || 12; // Default to 12 if zoom is not set
     map.setCenter(coordinates);
-    map.setZoom(18); // Set a high zoom level by default
+    map.setZoom(zoomLevel); // Use the zoom level from the CSV
 
     // Update question and answers
     document.getElementById('question').textContent = currentData.question;
@@ -90,4 +91,5 @@ function checkAnswer(selectedAnswer) {
 
 // Start the game
 loadData();
+
 
