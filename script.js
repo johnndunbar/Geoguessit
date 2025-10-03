@@ -16,7 +16,7 @@ map = new mapboxgl.Map({
 
 // Load data from Google Sheets
 function loadData() {
-    fetch('fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')
         .then(response => response.text())
         .then(csvData => {
             Papa.parse(csvData, {
