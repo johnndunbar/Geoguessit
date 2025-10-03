@@ -44,8 +44,15 @@ function loadRandomLocation() {
     // Center map on the location with the zoom level from the CSV
     const coordinates = [parseFloat(currentData.longitude), parseFloat(currentData.latitude)];
     const zoomLevel = parseInt(currentData.zoom) || 12; // Default to 12 if zoom is not set
+
+    // Set the minZoom to prevent zooming out more than 2 levels
+    const minZoomLevel = Math.max(0, zoomLevel - 2); // Ensure minZoom is not negative
+
     map.setCenter(coordinates);
-    map.setZoom(zoomLevel); // Use the zoom level from the CSV
+    map.setZoom(zoomLevel);
+
+    // Update the map's minZoom dynamically
+    map.setMinZoom(minZoomLevel);
 
     // Update question and answers
     document.getElementById('question').textContent = currentData.question;
@@ -70,6 +77,7 @@ function loadRandomLocation() {
     });
 }
 
+
 // Shuffle array for random answer order
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -91,5 +99,6 @@ function checkAnswer(selectedAnswer) {
 
 // Start the game
 loadData();
+
 
 
