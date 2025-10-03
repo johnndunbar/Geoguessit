@@ -84,3 +84,5 @@ function checkAnswer(selectedAnswer) {
     loadRandomLocation();
 }
 
+// Start the game
+loadData();
