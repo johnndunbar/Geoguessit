@@ -10,12 +10,13 @@ map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-v9',
     center: [0, 0], // Default center
-    zoom: 20
+    zoom: 20,
+	maxZoom:24
 });
 
 // Load data from Google Sheets
 function loadData() {
-    fetch('fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')')
+    fetch('fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')
         .then(response => response.text())
         .then(csvData => {
             Papa.parse(csvData, {
