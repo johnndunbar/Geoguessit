@@ -2,6 +2,7 @@
 let map;
 let currentData;
 let correctAnswer;
+let allSheetData = []; // Store all data globally to avoid repeated fetches
 
 // Initialize Mapbox map
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamFtaW50ZCIsImEiOiJjbHI2NHRtcWgxdjlqMmpwODI3bWVvOHU0In0.CC5tEr4QK7D-i5JKJ9oyRA';
@@ -9,34 +10,36 @@ map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-streets-v11',
     center: [0, 0], // Default center
-    zoom: 2
+    zoom: 6
 });
 
-// Load CSV data
-// Remplace la ligne Papa.parse("data.csv", ...) par :
-fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')
-    .then(response => response.text())
-    .then(csvData => {
-        Papa.parse(csvData, {
-            header: true,
-            complete: function(results) {
-                loadRandomLocation(results.data);
-            }
-        });
-    })
-    .catch(error => console.error('Erreur lors du chargement des données :', error));
+// Load data from Google Sheets
+function loadData() {
+    fetch('fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')')
+        .then(response => response.text())
+        .then(csvData => {
+            Papa.parse(csvData, {
+                header: true,
+                complete: function(results) {
+                    allSheetData = results.data;
+                    loadRandomLocation(); // Load first location
+                }
+            });
+        })
+        .catch(error => console.error('Error loading data:', error));
+}
 
-
-// Load a random location from the data
-function loadRandomLocation(data) {
-    const randomIndex = Math.floor(Math.random() * data.length);
-    currentData = data[randomIndex];
+// Load a random location from the global data
+function loadRandomLocation() {
+    if (allSheetData.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * allSheetData.length);
+    currentData = allSheetData[randomIndex];
     correctAnswer = currentData.correctAnswer;
 
     // Center map on the location
     const coordinates = [parseFloat(currentData.longitude), parseFloat(currentData.latitude)];
     map.setCenter(coordinates);
-    map.setZoom(12); // Zoom in for detail
+    map.setZoom(12);
 
     // Display question and answers
     document.getElementById('question').textContent = currentData.question;
@@ -77,11 +80,5 @@ function checkAnswer(selectedAnswer) {
         alert(`Wrong! The correct answer was: ${correctAnswer}`);
     }
     // Load a new location
-    Papa.parse("data.csv", {
-        download: true,
-        header: true,
-        complete: function(results) {
-            loadRandomLocation(results.data);
-        }
-    });
+    loadRandomLocation();
 }
