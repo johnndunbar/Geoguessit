@@ -2,20 +2,21 @@
 let map;
 let currentData;
 let correctAnswer;
-let allSheetData = []; // Store all data globally to avoid repeated fetches
+let allSheetData = [];
 
-// Initialize Mapbox map
+// Initialize Mapbox map with satellite-only style and max zoom
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamFtaW50ZCIsImEiOiJjbHI2NHRtcWgxdjlqMmpwODI3bWVvOHU0In0.CC5tEr4QK7D-i5JKJ9oyRA';
 map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/satellite-v9',
-    center: [0, 0], // Default center
-    zoom: 9,
-	maxZoom:24
+    style: 'mapbox://styles/mapbox/satellite-v9', // Satellite-only style (no labels)
+    center: [0, 0],
+    zoom: 2,
+    maxZoom: 22 // Maximum zoom level
 });
 
 // Load data from Google Sheets
 function loadData() {
+    document.getElementById('question').textContent = "Loading game data...";
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRiyRa7LxG3TUhcNuDBMTUhkSeIIk78Jyu5qHa0TOWvm5JnaTPiMTQctWvgk5xVhh6af0R76n8VTlvt/pub?gid=705765450&single=true&output=csv')
         .then(response => response.text())
         .then(csvData => {
@@ -23,26 +24,29 @@ function loadData() {
                 header: true,
                 complete: function(results) {
                     allSheetData = results.data;
-                    loadRandomLocation(); // Load first location
+                    loadRandomLocation();
                 }
             });
         })
-        .catch(error => console.error('Error loading data:', error));
+        .catch(error => {
+            console.error('Error loading data:', error);
+            document.getElementById('question').textContent = "Failed to load data. Please try again.";
+        });
 }
 
-// Load a random location from the global data
+// Load a random location
 function loadRandomLocation() {
     if (allSheetData.length === 0) return;
     const randomIndex = Math.floor(Math.random() * allSheetData.length);
     currentData = allSheetData[randomIndex];
     correctAnswer = currentData.correctAnswer;
 
-    // Center map on the location
+    // Center map on the location with maximum zoom
     const coordinates = [parseFloat(currentData.longitude), parseFloat(currentData.latitude)];
     map.setCenter(coordinates);
-    map.setZoom(12);
+    map.setZoom(18); // Set a high zoom level by default
 
-    // Display question and answers
+    // Update question and answers
     document.getElementById('question').textContent = currentData.question;
     const answersContainer = document.getElementById('answers');
     answersContainer.innerHTML = '';
