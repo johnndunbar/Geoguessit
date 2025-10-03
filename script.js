@@ -10,7 +10,7 @@ map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/satellite-v9',
     center: [0, 0], // Default center
-    zoom: 20,
+    zoom: 9,
 	maxZoom:24
 });
 
@@ -83,3 +83,4 @@ function checkAnswer(selectedAnswer) {
     // Load a new location
     loadRandomLocation();
 }
+
