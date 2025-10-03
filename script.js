@@ -8,9 +8,10 @@ let allSheetData = []; // Store all data globally to avoid repeated fetches
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamFtaW50ZCIsImEiOiJjbHI2NHRtcWgxdjlqMmpwODI3bWVvOHU0In0.CC5tEr4QK7D-i5JKJ9oyRA';
 map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/satellite-streets-v11',
+    style: 'mapbox://styles/mapbox/satellite-v9',
     center: [0, 0], // Default center
-    zoom: 6
+    zoom: 20,
+	maxZoom: 24
 });
 
 // Load data from Google Sheets
